@@ -55,7 +55,6 @@ class SignUpFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {

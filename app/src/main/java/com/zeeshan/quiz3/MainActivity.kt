@@ -1,22 +1,31 @@
 package com.zeeshan.quiz3
 
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.zeeshan.quiz3.fragment.SignInFragment
 import com.zeeshan.quiz3.fragment.SignUpFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SignUpFragment.OnFragmentInteractionListener {
+    override fun onFragmentInteraction(uri: Uri) {
+        Log.d("Fragment","On Fragment Interaction")
+    }
 
     lateinit var signUpFragment: SignUpFragment
+    lateinit var signInFragment: SignInFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         signUpFragment = SignUpFragment()
+        signInFragment = SignInFragment()
     }
 
     override fun onBackPressed() {
@@ -68,17 +78,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_sign_in -> {
                 Toast.makeText(this,"Sign In",Toast.LENGTH_SHORT).show()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container_main, signInFragment)
+                    .addToBackStack(signInFragment.toString())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+//                return true
             }
             R.id.nav_sign_up -> {
                 Toast.makeText(this,"Sign Up",Toast.LENGTH_SHORT).show()
-
-                supportFragmentManager
-                    .beginTransaction()
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.container_main, signUpFragment)
                     .addToBackStack(signUpFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
-                return true
+//                return true
             }
             R.id.nav_profile -> {
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show()
@@ -91,13 +105,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_share -> {
                 Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show()
+                val shareIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+                    type = "text/plain"
+                }
+                startActivity(Intent.createChooser(shareIntent, "Feel free to share this app with your friends."))
+
             }
-            R.id.nav_send -> {
-                Toast.makeText(this,"Send",Toast.LENGTH_SHORT).show()
+            R.id.nav_close -> {
+                Toast.makeText(this,"Close",Toast.LENGTH_SHORT).show()
+                closeApplicationPopup()
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun closeApplicationPopup() {
+        val dialogBuilder = AlertDialog.Builder(this@MainActivity)
+        val create : AlertDialog = dialogBuilder.create()
+
+        dialogBuilder.setCancelable(false)
+
+        dialogBuilder.setTitle("Thanks for Being Here!")
+        dialogBuilder.setMessage("Do you want to Close Application?")
+
+        dialogBuilder.setPositiveButton("Yes", object : DialogInterface.OnClickListener{
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                Toast.makeText(this@MainActivity, "Thank for being with us...", Toast.LENGTH_SHORT).show()
+                finishAffinity()
+            }
+
+        })
+        dialogBuilder.setNegativeButton("No", object : DialogInterface.OnClickListener{
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                create.dismiss()
+                Toast.makeText(this@MainActivity, "Great Idea....", Toast.LENGTH_SHORT).show()
+            }
+        })
+        dialogBuilder.create()
+        dialogBuilder.show()
     }
 }
