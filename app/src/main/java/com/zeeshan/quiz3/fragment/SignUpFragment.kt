@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import com.google.gson.Gson
 
 import com.zeeshan.quiz3.R
+import com.zeeshan.quiz3.model.User
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +50,68 @@ class SignUpFragment : Fragment() {
         // Inflate the layout for this fragment
         var view =  inflater.inflate(R.layout.fragment_sign_up, container, false)
 
+        submitButton(view)
+
         return view
+    }
+
+    private fun submitButton(view: View) {
+        val userName = view.findViewById<EditText>(R.id.user_name_textview)
+        val userEmail = view.findViewById<EditText>(R.id.email_textview)
+        val userPassword = view.findViewById<EditText>(R.id.password_textview)
+        val signUpButton = view.findViewById<Button>(R.id.signUp_btn)
+
+        signUpButton.setOnClickListener {
+            if (!userName.text.trim().isEmpty()){
+                if (!userEmail.text.trim().isEmpty()){
+                    if (!userPassword.text.trim().isEmpty()){
+                        SignUpUser(User(userName.text.toString(), userEmail.text.toString(), userPassword.text.toString()))
+                        userName.setText("")
+                        userEmail.setText("")
+                        userPassword.setText("")
+                    }
+                    else{
+                        userPassword.setError("Invalid Password")
+                    }
+                }
+                else{
+                    userEmail.setError("Invalid Email")
+                }
+            }
+            else{
+                userName.setError("Invalid User Name")
+            }
+        }
+
+    }
+
+    private fun SignUpUser(user: User) {
+        val sharedPreferences = activity?.getSharedPreferences("App", 0)
+        val gson = Gson()
+        val editor = sharedPreferences?.edit()
+        val userStringObj = gson.toJson(user)
+
+        val userStringSet = sharedPreferences?.getStringSet("users",null)
+        if (userStringSet!=null){
+            userStringSet.forEach{
+                val userObj = gson.fromJson(it, User::class.java)
+                if (user.email.equals(userObj.email)){
+                    Toast.makeText(activity, "User Already Exist!!", Toast.LENGTH_SHORT).show()
+                    return
+                }
+            }
+            userStringSet.add(userStringObj)
+            editor?.putStringSet("users", userStringSet)
+            editor?.apply()
+            Toast.makeText(activity, "User Added Successfully", Toast.LENGTH_SHORT).show()
+        }
+        else{
+            val hashSet = HashSet<String>()
+            hashSet.add(userStringObj)
+            editor?.putStringSet("users", userStringSet)
+            editor?.apply()
+            Toast.makeText(activity, "User Added Successfully", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

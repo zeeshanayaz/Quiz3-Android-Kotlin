@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     lateinit var signUpFragment: SignUpFragment
     lateinit var signInFragment: SignInFragment
+    lateinit var aboutFragment: AboutFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         signUpFragment = SignUpFragment()
         signInFragment = SignInFragment()
+        aboutFragment = AboutFragment()
+
+//        aboutFragmentEvoke()
     }
 
     override fun onBackPressed() {
@@ -68,9 +72,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings ->{
+                Toast.makeText(this,"About",Toast.LENGTH_SHORT).show()
+                aboutFragmentEvoke()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun aboutFragmentEvoke() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_main, aboutFragment)
+//            .addToBackStack(aboutFragment.toString())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

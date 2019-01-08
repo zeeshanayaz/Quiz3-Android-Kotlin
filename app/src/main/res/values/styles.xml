@@ -16,7 +16,7 @@
     <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
     <style name="page_heading">
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_margin">5dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/roboto</item>
@@ -35,4 +35,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_gravity">center</item>
     </style>
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_below">@id/heading</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
 </resources>

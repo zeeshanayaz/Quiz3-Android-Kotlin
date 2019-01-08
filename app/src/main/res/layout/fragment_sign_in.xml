@@ -19,6 +19,9 @@
                     android:text="Log In"
                     style="@style/page_heading"
             />
+            <View
+                    android:id="@+id/divider"
+                    style="@style/divider"/>
 
             <!--<android.support.design.widget.TextInputLayout-->
                     <!--android:layout_width="match_parent"-->
@@ -60,7 +63,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                    android:id="@+id/signup_btn"
+                    android:id="@+id/logIn_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Log In"
