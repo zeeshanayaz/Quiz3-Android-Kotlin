@@ -5,7 +5,11 @@ class User(var name : String, var email : String /*Primary Key*/, var password :
         return "User(name='$name', email='$email', password='$password')"
     }
 
-    companion object {
-        var userLogedEmail : String? = null
-    }
+//    companion object {
+//        var userLogedEmail : String = ""
+//    }
+
+//    fun setValueOfLogged(value : String){
+//        userLogedEmail = value
+//    }
 }

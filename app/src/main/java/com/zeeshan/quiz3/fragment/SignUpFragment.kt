@@ -108,7 +108,7 @@ class SignUpFragment : Fragment() {
         else{
             val hashSet = HashSet<String>()
             hashSet.add(userStringObj)
-            editor?.putStringSet("users", userStringSet)
+            editor?.putStringSet("users", hashSet)
             editor?.apply()
             Toast.makeText(activity, "User Added Successfully", Toast.LENGTH_SHORT).show()
         }

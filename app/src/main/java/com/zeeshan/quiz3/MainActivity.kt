@@ -14,6 +14,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.zeeshan.quiz3.fragment.AboutFragment
+import com.zeeshan.quiz3.fragment.ProfileFragment
 import com.zeeshan.quiz3.fragment.SignInFragment
 import com.zeeshan.quiz3.fragment.SignUpFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var signUpFragment: SignUpFragment
     lateinit var signInFragment: SignInFragment
     lateinit var aboutFragment: AboutFragment
+    lateinit var profileFragment: ProfileFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         signUpFragment = SignUpFragment()
         signInFragment = SignInFragment()
         aboutFragment = AboutFragment()
+        profileFragment = ProfileFragment()
 
 //        aboutFragmentEvoke()
     }
@@ -112,6 +116,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_profile -> {
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container_main, profileFragment)
+                    .addToBackStack(profileFragment.toString())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
             }
             R.id.nav_all_user_list -> {
                 Toast.makeText(this,"All USer List",Toast.LENGTH_SHORT).show()

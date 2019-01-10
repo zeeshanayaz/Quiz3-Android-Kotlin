@@ -68,7 +68,8 @@ class SignInFragment : Fragment() {
                 val userObj = gson.fromJson(it, User::class.java)
                 if(userObj.email.equals(email) && userObj.password.equals(password))
                 {
-                    User.userLogedEmail = email
+//                    userObj.setValueOfLogged(email)
+//                    User.userLogedEmail = email
                     Toast.makeText(activity, "User Log In successful", Toast.LENGTH_SHORT).show()
                     return
                 }
